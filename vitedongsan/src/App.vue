@@ -1,16 +1,16 @@
 <template>
   <div>
+    <!-- HTML 안에서 반복문 : v-for -->
+    <div class="menu">
+      <a v-for="menu in menus" :key="menu"> {{ menu }} </a>
+    </div>
+
     <a href="https://vitejs.dev" target="_blank">
       <img src="/vite.svg" class="logo" alt="Vite logo" />
     </a>
     <a href="https://vuejs.org/" target="_blank">
       <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
     </a>
-
-    <!-- HTML 안에서 반복문 : v-for -->
-    <div>
-      <a></a>
-    </div>
 
     <div>
       <h4 class="red" :style=style>{{ roomName }} 원룸</h4>
@@ -30,6 +30,7 @@ import { reactive, ref } from "@vue/reactivity";
 let roomName = ref<string>('허위매물')
 let style    = ref<string>('color: skyblue')
 let products = ref<string[]>(['역삼동 원룸', '천호동 원룸', '마포구 원룸'])
+let menus    = ref<string[]>(['Home', 'shop', 'abount'])
 
 console.log(roomName.value) // ref는 .value로 접근해야 값을 얻을 수 있다.
 
@@ -85,6 +86,15 @@ export default {
 
 
 <style scoped>
+.menu {
+  background: darkmagenta;
+  padding:15px;
+  border-radius: 5px;
+}
+.menu a {
+  color: white;
+  padding: 10px;
+}
 .logo {
   height: 6em;
   padding: 1.5em;
