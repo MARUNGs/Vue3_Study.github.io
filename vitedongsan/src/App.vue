@@ -2,7 +2,7 @@
   <div>
     <!-- HTML 안에서 반복문 : v-for -->
     <div class="menu">
-      <a v-for="menu in menus" :key="menu"> {{ menu }} </a>
+      <!-- <a v-for="(menu, i) in menus" :key="menu"> {{ menu }}  {{ i }}</a> -->
     </div>
 
     <a href="https://vitejs.dev" target="_blank">
@@ -12,13 +12,14 @@
       <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
     </a>
 
-    <div>
-      <h4 class="red" :style=style>{{ roomName }} 원룸</h4>
-      <p>50 만원</p>
-    </div>
-    <div>
-      <h4>{{ products[0] }}</h4>
-      <p>10마넌</p>
+    <!-- <div v-for="(product, i) in products" :key="product">
+      <h4>{{ product }}</h4>
+      <p>{{ 100 + i }}원</p>
+      <button v-on:click="++count">허위매물 신고  <span>신고 수 : {{ count }}</span> </button>
+    </div> -->
+
+    <div v-for="(key, i) in obj" :key="i">
+      <p>{{ key }}</p>
     </div>
   </div>
 </template>
@@ -26,15 +27,26 @@
 <!-- Vue 3버전 -->
 <script setup lang="ts">
 import { reactive, ref } from "@vue/reactivity";
+// 외부 타입스크립트 객체를 불러와야한다.
+import {AppInfo} from "@/types"
 
-let roomName = ref<string>('허위매물')
-let style    = ref<string>('color: skyblue')
-let products = ref<string[]>(['역삼동 원룸', '천호동 원룸', '마포구 원룸'])
-let menus    = ref<string[]>(['Home', 'shop', 'abount'])
+// 객체형 외부 타입스크립트
+// const obj = reactive<{알수없음?: number, roomName: string, menus: string[], count: number}>({
+const obj = reactive<AppInfo>({
+  roomName: '가나다라',
+  style: 'color: skyblue',
+  products: ['역삼동 원룸', '천호동 원룸', '마포구 원룸'],
+  menus: ['Home', 'shop', 'abount'],
+  count: 0
+})
 
-console.log(roomName.value) // ref는 .value로 접근해야 값을 얻을 수 있다.
-
-// class | style 같은 값들도 선언할 수 있다.
+// 단순 자료형 타입스크립트
+// let roomName = ref<string>('허위매물')
+// let style    = ref<string>('color: skyblue')
+// let products = ref<string[]>(['역삼동 원룸', '천호동 원룸', '마포구 원룸'])
+// let menus    = ref<string[]>(['Home', 'shop', 'abount'])
+// let count    = ref<number>(0)
+// console.log(roomName.value) // ref는 .value로 접근해야 값을 얻을 수 있다.
 </script>
 
 
@@ -56,34 +68,6 @@ export default {
 }
 </script> 
 -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 <style scoped>
 .menu {
