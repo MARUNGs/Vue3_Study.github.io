@@ -20,6 +20,10 @@ export interface AppInfo {
     content :string,
     price :number
   }[]
+  /* 원룸 상세페이지 idno */
+  detailIdNo :number
+  /* props 테스트용 속성 */
+  object :{name :string, age :number}
 }
 
 // 원룸 실제 데이터 
