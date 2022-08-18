@@ -2,9 +2,7 @@
   <div class="black-bg" v-if="dataObj.modalFlag">
     <div class="white-bg">
       <div class="close">
-        <span class="right" @click="() => {
-          dataObj.modalFlag = false
-        }"> X </span>
+        <span class="right" @click="$emit('closeModal', dataObj.modalFlag)"> X </span>
       </div>
       <img :src="dataObj.oneRoomData[dataObj.detailIdNo].image" class="detail_image" />
       <h4>{{ dataObj.oneRoomData[dataObj.detailIdNo].title }}</h4>
@@ -17,14 +15,9 @@
 <script setup lang="ts">
 import { AppInfo } from '@/types';
 
-// ※ 주의사항 : props는 read-only 성질을 가져야만 한다. 절대 수정하지 않는다.
 const props = defineProps<{
-  dataObj :AppInfo // dataObj --> 부모 컴포넌트에서 던진 props의 타입은 AppInfo이다.
+  dataObj :AppInfo
 }>()
-
-// defineProps 변수 이용방법!
-// 1. template : 객체의 key값을 호출하여 사용한다.
-// 2. script : props.key 값을 호출하여 사용한다.
 </script>
 
 <style scoped>

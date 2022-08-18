@@ -1,15 +1,16 @@
 <template>
-  <!-- 
-    * props를 전송하는 다양한 방법
-    1. 작명 = "string자료"
-    2. :작명 = "number자료"
-    3. v-bind="object" :name="object.name" :age="object.age"
-  -->
-
-  <ModalDetail :dataObj="dataObj" />
+  <ModalDetail :dataObj="dataObj"
+                @closeModal="dataObj.modalFlag = false;" />
   <Menu :menus="dataObj.menus" />
   <Discount />
-  <Card v-for="(data, i) in dataObj.oneRoomData" :oneRoomData="dataObj.oneRoomData[i]" :style="dataObj.style" />
+  <Card v-for="(data, i) in dataObj.oneRoomData" 
+        :oneRoomData="dataObj.oneRoomData[i]" 
+        :style="dataObj.style"
+        :modalFlag="dataObj.modalFlag"
+        @modalOpen="
+            dataObj.modalFlag  = true; 
+            dataObj.detailIdNo = $event"
+  />
 </template>
 
 <!-- ------------------------------------------------------------------------------------------------------------------ -->
@@ -54,17 +55,6 @@ function increase(i :number) :void {
     console.log('객체가 없드')
   }
 }
-
-// 모달창 오픈
-function modalOpen() :void {
-  let flag = dataObj.modalFlag
-
-  if(!flag) {
-    dataObj.modalFlag = true
-  } else {
-    dataObj.modalFlag = false
-  }
-}
 </script>
 
 <style scoped>
@@ -75,8 +65,6 @@ body {
 div {
   box-sizing: border-box;
 }
-
-
 /* logo 설정 */
 .logo {
   height: 6em;
