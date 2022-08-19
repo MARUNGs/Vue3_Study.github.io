@@ -1,4 +1,4 @@
-// 객체 설정
+// ********** 객체 설정 **********
 export interface AppInfo {
   /* 원룸 이름 */
   roomName? :string
@@ -24,6 +24,14 @@ export interface AppInfo {
   detailIdNo :number
   /* props 테스트용 속성 */
   object :{name :string, age :number}
+}
+
+// ********** 사용자가 입력한 데이터를 저장하는 객체 **********
+export interface InputSaveInfo {
+  /* 개월 수 - input(string) */
+  month :string
+  /* 개월 수 * 금액 계산 */
+  monthyPrice :number
 }
 
 // 원룸 실제 데이터 
