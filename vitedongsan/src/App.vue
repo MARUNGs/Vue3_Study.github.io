@@ -1,8 +1,19 @@
 <template>
-  <ModalDetail :dataObj="dataObj"
-                @closeModal="dataObj.modalFlag = false;" />
+  <transition name="fade">
+    <ModalDetail :dataObj="dataObj"
+                  @closeModal="dataObj.modalFlag = false;" />
+  </transition>
   <Menu :menus="dataObj.menus" />
-  <Discount />
+
+  <Discount :dataObj="dataObj" />
+
+  <div>
+    <button @click="priceSortAsc">가격낮은순</button>
+    <button @click="priceSortDesc">가격높은순</button>
+    <button @click="productNameAsc">가나다순</button>
+    <button @click="sortBack">되돌리기</button>
+  </div>
+
   <Card v-for="(data, i) in dataObj.oneRoomData" 
         :oneRoomData="dataObj.oneRoomData[i]" 
         :style="dataObj.style"
@@ -19,13 +30,14 @@
 <script setup lang="ts">
 // ********** import **********
 import {ref, reactive} from "@vue/reactivity"
-import {AppInfo, Data} from "@/types" // 외부 타입스크립트 객체를 불러와야한다.
+import {AppInfo, Data} from "@/types"
 
 // ********** Components **********
 import Discount from "@/components/Discount.vue" // 외부 컴포넌트 import만 하면 자동으로 등록된다.
 import ModalDetail from "@/components/ModalDetail.vue"
 import Menu from "@/components/Menu.vue"
 import Card from "@/components/Card.vue"
+import { onMounted } from "vue"
 
 // ********** Object **********
 const dataObj = reactive<AppInfo>({
@@ -35,9 +47,19 @@ const dataObj = reactive<AppInfo>({
   countList: [{ id: 0, count: 0 }, { id: 1, count: 0 }, { id: 2, count: 0 }],
   modalFlag: false,
   oneRoomData: Data,
+  originalData: [...Data],
   detailIdNo: 0,
-  object :{name: 'Yoo', age: 20}
+  object :{name: 'Yoo', age: 20},
+  showDiscount: true,
+  discountPer: 30
 })
+
+// ********** LifeCycle Hooks **********
+// onMounted(() => {
+//   setTimeout(() => {
+//     dataObj.showDiscount = false
+//   }, 2000)
+// })
 
 // ********** Functions **********
 // 신고 수 증가
@@ -54,6 +76,42 @@ function increase(i :number) :void {
   } else {
     console.log('객체가 없드')
   }
+}
+
+/** 가격 낮은 순 */
+function priceSortAsc() :void {
+  dataObj.oneRoomData.sort((a, b) => {
+    return a.price - b.price
+  })
+}
+
+/** 가격 높은 순 */
+function priceSortDesc() :void {
+  dataObj.oneRoomData.sort((a, b) => {
+    return b.price - a.price
+  })
+}
+
+/** 상품명 가나다 순 */
+function productNameAsc() :void {
+  dataObj.oneRoomData.sort((a, b) => {
+    let aTitle = a.title.toUpperCase()
+    let bTitle = b.title.toUpperCase()
+
+    if(aTitle < bTitle) {
+      return -1
+    } else if(aTitle > bTitle) {
+      return 1
+    } else {
+      return 0
+    }
+  })
+}
+
+/** 되돌리기 */
+function sortBack() {
+  // 주의 : array 값을 등호(=)로 삽입시, 값 공유를 의미한다.
+  dataObj.oneRoomData = [...dataObj.originalData]
 }
 </script>
 
@@ -76,5 +134,36 @@ div {
 }
 .logo.vue:hover {
   filter: drop-shadow(0 0 2em #42b883aa);
+}
+
+/* 모달창 애니메이션 설정 */
+.start {
+  opacity: 0;
+  transition: all 1s;
+}
+.end {
+  opacity: 1;
+}
+
+/* transition 태그 내장 class 설정 ---> .작명-enter-from ... */
+.fade-enter-from { /* 시작 애니메이션 */
+  opacity: 0;
+}
+.fade-enter-active { /* 애니메이션 진행하는 동안 */
+  transition: all 0.2s;
+}
+.fade-enter-to { /* 종료 애니메이션 */
+  opacity: 1;
+}
+
+/* 퇴장 애니메이션 */
+.fade-leave-from {
+  opacity: 1;
+}
+.fade-leave-action {
+  transition: all 1s;
+}
+.fade-leave-to {
+  opacity: 0;
 }
 </style>

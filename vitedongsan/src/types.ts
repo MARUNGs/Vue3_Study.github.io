@@ -1,29 +1,38 @@
+// ********** 원룸 데이터 타입 설정 **********
+type OneRootDataType = {
+  id :number,
+  title :string,
+  image :string,
+  content :string,
+  price :number
+}
+
 // ********** 객체 설정 **********
 export interface AppInfo {
-  /* 원룸 이름 */
+  /** 원룸 이름 */
   roomName? :string
-  /* css style */
+  /** css style */
   style? :string
-  /* 상품목록 list */
+  /** 상품목록 list */
   products :{id: number, name :string}[]
-  /* 내비게이션 */
+  /** 내비게이션 */
   menus :string[]
-  /* 신고 수 */
+  /** 신고 수 */
   countList :{id :number, count :number}[]
-  /* 모달창 상태값 */
+  /** 모달창 상태값 */
   modalFlag :boolean
-  /* 원룸 데이터 */
-  oneRoomData : {
-    id :number,
-    title :string,
-    image :string,
-    content :string,
-    price :number
-  }[]
-  /* 원룸 상세페이지 idno */
+  /** 원룸 데이터 */
+  oneRoomData :OneRootDataType[]
+  /** 원룸 데이터 보존용 */
+  originalData :OneRootDataType[]
+  /** 원룸 상세페이지 idno */
   detailIdNo :number
-  /* props 테스트용 속성 */
+  /** props 테스트용 속성 */
   object :{name :string, age :number}
+  /** alert 안내창 상태값 */
+  showDiscount :boolean
+  /** alert 안내창 내용 */
+  discountPer :number
 }
 
 // ********** 사용자가 입력한 데이터를 저장하는 객체 **********
