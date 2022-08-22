@@ -49,8 +49,8 @@ interface CssType {
 // /********* Object **********/
 // /** Css 상태값 객체 */
 const css :CssType = {
-  hamburgerClick = false,
-  dropDownClick = false
+  hamburgerClick: false,
+  dropDownClick: false
 }
 
 /********* function **********/
