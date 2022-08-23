@@ -2,7 +2,7 @@
 <nav class="navbar navbar-expand-lg bg-light">
   <div class="container-fluid">
     <a class="navbar-brand" href="#">Navbar</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" @click="onClick" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -38,23 +38,26 @@
 </template>
 
 <script setup lang="ts">
-/********** Type **********/
-interface CssType {
-  /** 햄버거메뉴 클릭 상태값 */
-  hamburgerClick :boolean
-  /** Dropdown 메뉴클릭 상태값 */
-  dropDownClick :boolean
-}
+/********** import **********/
 
-// /********* Object **********/
-// /** Css 상태값 객체 */
-const css :CssType = {
-  hamburgerClick: false,
-  dropDownClick: false
-}
+
+/********** Type **********/
+
+
+/********* Object **********/
+
 
 /********* function **********/
-// function 
+/** 햄버거메뉴 클릭시 토글기능 발생 */
+function onClick() :void {
+  let toggleMenu
+
+  if(document.querySelector('.navbar-collapse') !== null) {
+    toggleMenu = document.querySelector('.navbar-collapse')
+  }
+
+  toggleMenu.classList.toggle('show')
+}
 </script>
 
 <style scoped>
