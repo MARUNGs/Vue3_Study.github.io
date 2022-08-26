@@ -2,13 +2,13 @@
     <div class="post">
         <div class="post-header">
         <div class="profile"></div>
-        <span class="profile-name">{{ Data[i].name }}</span>
+        <span class="profile-name">{{ d.name }}</span>
         </div>
-        <div class="post-body" :style="{ 'background-image': `url(${ Data[i].postImage })` }"></div>
+        <div class="post-body" :style="{ 'background-image': `url(${ d.postImage })` }"></div>
         <div class="post-content">
-        <p>{{ Data[i].likes }} Likes</p>
-        <p><strong>{{ Data[i].name }}</strong> {{ Data[i].content }}</p>
-        <p class="date">{{ Data[i].date }}</p>
+        <p>{{ d.likes }} Likes</p>
+        <p><strong>{{ d.name }}</strong> {{ d.content }}</p>
+        <p class="date">{{ d.date }}</p>
         </div>
     </div> 
 </template>
@@ -25,7 +25,7 @@ type StringType = string
 /** props */
 const props = defineProps<{ 
     i :number,
-    Data :PostInterface[]
+    d :PostInterface
 }>()
 
 
@@ -35,7 +35,7 @@ let postImgStr :StringType = ''
 
 /********** function **********/
 
-console.log(props.Data[props.i].postImage)
+
 </script>
 
 <style scoped>
