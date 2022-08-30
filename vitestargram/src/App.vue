@@ -1,34 +1,44 @@
+<!-- 카카오채널 search id : wise_counseling -->
 <template>
-    <div class="header">
-        <ul class="header-button-left">
-            <li @click="cancelFn">Cancel</li>
-        </ul>
+    <div id="minWidth">
+        <div class="header">
+            <ul class="header-button-left">
+                <li v-if="step >= 1" class="btn-two mini red" @click="cancelFn">Cancel</li>
+            </ul>
 
-        <!-- 클릭시 다음 화면으로 전환 -->
-        <ul class="header-button-right">
-            <li v-if="step === 1" @click="++step">Next</li>
-            <li v-if="step === 2" @click="publish">발행</li>
-        </ul>
-        <img src="./assets/logo.png" class="logo" />
+            <!-- 클릭시 다음 화면으로 전환 -->
+            <ul class="header-button-right">
+                <li v-if="step === 1" class="btn-two mini green" @click="++step"> Next</li>
+                <li v-if="step === 2" class="btn-two mini blue" @click="publish">발행</li>
+            </ul>
+            <img src="./assets/logo.png" class="logo" />
+        </div>
+
+        <!--
+            Data : 게시물들
+            step : Header에 사용되며 취소/등록을 담당
+            blob : 이미지 데이터
+            filterNm : 사진필터명(class binding)
+        -->
+        <Container :Data="refData" 
+                :step="step"
+                :blob="(blob as any)"
+                :filterNm="filterNm"
+                    @write="write"
+        />
+        
+        <div class="footer">
+            <ul class="footer-button-plus">
+                <input @change="upload" type="file" id="file" class="inputfile" />
+                <label for="file" class="input-plus btn-two mini red">+</label>
+            </ul>
+        </div>
+
+        <button type="button" class="btn-two mini blue" 
+                @click="pushData"> 피드 더보기
+        </button>
     </div>
-
-    <Container :Data="refData" 
-               :step="step"
-               :blob="(blob as any)"
-                @write="write"
-               :filterNm="filterNm"
-    />
-    
-    <div class="footer">
-        <ul class="footer-button-plus">
-            <input @change="upload" type="file" id="file" class="inputfile" />
-            <label for="file" class="input-plus">+</label>
-        </ul>
-    </div>
-
-    <button type="button" class="btn btn-primary" 
-            @click="pushData"> 더보기
-    </button>
+    <button class="btn-help mini btn-jittery">?</button>
 </template>
 
 <script setup lang="ts">
@@ -136,6 +146,18 @@ function publish() {
 </script>
 
 <style scoped>
+#minWidth {
+    box-sizing: border-box;
+    font-family: "consolas";
+    margin-top: 60px;
+    width: 100%;
+    max-width: 460px;
+    margin: auto;
+    position: relative;
+    border-right: 1px solid #eee;
+    border-left: 1px solid #eee;
+}
+
 ul {
   padding: 5px;
   list-style-type: none;
@@ -147,12 +169,12 @@ ul {
   position: absolute;
   left: 0;
   right: 0;
-  top: 13px;
+  top: 8px;
 }
 .header {
   width: 100%;
   height: 40px;
-  background-color: #ffbdbd;
+  background-color: rgb(23, 23, 23);
   padding-bottom: 8px;
   position: sticky;
   top: 0;
@@ -161,13 +183,13 @@ ul {
   color: rgb(150, 44, 44);
   float: left;
   width: 50px;
-  padding-left: 20px;
+  /* padding-left: 20px; */
   cursor: pointer;
 }
 .header-button-right {
   color: rgb(150, 44, 44);
   float: right;
-  width: 50px;
+  /* width: 50px; */
   cursor: pointer;
 }
 .footer {
@@ -175,7 +197,7 @@ ul {
   position: sticky;
   bottom: 0;
   padding-bottom: 10px;
-  background-color: #ffbdbd;
+  background-color: rgb(23, 23, 23);
 }
 .footer-button-plus {
   width: 80px;
@@ -194,6 +216,82 @@ ul {
   display: none;
 }
 .input-plus {
-  cursor: pointer;
+    cursor: pointer;
 }
+
+/* dev-header 설정 */
+.btn-two {
+    text-decoration: none;
+}
+.btn-two.mini {
+    padding: 4px 12px;
+    font-size: 12px;
+}
+.btn-two {
+  color: white; 
+  padding: 15px 25px;
+  display: inline-block;
+  border: 1px solid rgba(0,0,0,0.21);
+  border-bottom-color: rgba(0,0,0,0.34);
+  text-shadow:0 1px 0 rgba(0,0,0,0.15);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.34) inset, 
+              0 2px 0 -1px rgba(0,0,0,0.13), 
+              0 3px 0 -1px rgba(0,0,0,0.08), 
+              0 3px 13px -1px rgba(0,0,0,0.21);
+}
+.btn-two:active {
+  top: 1px;
+  border-color: rgba(0,0,0,0.34) rgba(0,0,0,0.21) rgba(0,0,0,0.21);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.89),0 1px rgba(0,0,0,0.05) inset;
+  position: relative;
+}
+.btn-two.green { background-color: #9abf7f; }
+.btn-two.green:active { box-shadow: 0 0 #87a86f; background-color: #87a86f; }
+
+.btn-two.blue     {background-color: #7fb1bf;}
+.btn-two.blue:active {box-shadow: 0 0 #74a3b0; background-color: #709CA8;}
+
+
+
+
+
+
+/* 도움말 버튼 설정 */
+/* 도움! 버튼 - 우측하단 고정 */
+.btn-help {
+    text-decoration: none;
+    padding: 4px 12px;
+    font-size: 20px;
+    color: white; 
+    display: inline-block;
+    border: 1px solid rgba(0,0,0,0.21);
+    border-bottom-color: rgba(0,0,0,0.34);
+    text-shadow:0 1px 0 rgba(0,0,0,0.15);
+    box-shadow: 0 1px 0 rgba(255,255,255,0.34) inset, 
+                0 2px 0 -1px rgba(0,0,0,0.13), 
+                0 3px 0 -1px rgba(0,0,0,0.08), 
+                0 3px 13px -1px rgba(0,0,0,0.21);
+    
+    background-color: #7fb1bf;
+}
+.btn-help:active {
+    box-shadow: 0 0 #74a3b0; background-color: #709CA8;
+}
+
+
+
+.btn-jittery {
+    position: fixed;
+    width: 40px;
+    height: 40px;
+    right: 30px;
+    bottom: 30px;
+    border-radius: 50%;
+}
+
+.btn-two.red       {background-color: #fa5a5a;}
+.btn-two.red:active {box-shadow: 0 0 #ff4c4b; background-color: #ff4c4b;}
+
+
+
 </style>

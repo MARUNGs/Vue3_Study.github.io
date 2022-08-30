@@ -110,12 +110,15 @@ border-radius: 5px;
 background: #555; 
 }
 .write-box {
-border: none;
-width: 90%;
-height: 100px;
-padding: 15px;
-margin: auto;
-display: block;
-outline: none;
+    border: none;
+    width: 90%;
+    height: 100px;
+    padding: 15px;
+    margin: auto;
+    display: block;
+    outline: none;
+    
+    color: #f1f1f1;
+    background-color: rgb(23, 23, 23);
 }
 </style>
