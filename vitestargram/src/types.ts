@@ -43,3 +43,10 @@ export const Data :PostInterface[] = [
       filter: "lofi"
     }
 ]
+
+/** 인스타그램 필터명 목록 */
+export const FilterNames :string[] = [ 
+    "aden", "_1977", "brannan", "brooklyn", "clarendon", "earlybird", "gingham", "hudson", 
+    "inkwell", "kelvin", "lark", "lofi", "maven", "mayfair", "moon", "nashville", "perpetua", 
+    "reyes", "rise", "slumber", "stinson", "toaster", "valencia", "walden", "willow", "xpro2"
+]

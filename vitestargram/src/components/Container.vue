@@ -10,26 +10,30 @@
     <div v-if="step === 1">
         <div class="upload-image" :style="{'background-image': `url(${blob})`}"></div>
         <div class="filters">
-            <div class="filter-1"></div>
-            <div class="filter-1"></div>
-            <div class="filter-1"></div>
-            <div class="filter-1"></div>
-            <div class="filter-1"></div>
+            <FilterBox v-for="(filter, i) in FilterNames"
+                       :blob="blob"
+                       :filter="filter">
+            </FilterBox>
+
         </div>
     </div>
 
     <!-- 글작성페이지 -->
     <div v-if="step === 2">
-        <div class="upload-image"></div>
+        <div class="upload-image" :style="{'background-image': `url(${blob})`}"></div>
         <div class="write">
-            <textarea class="write-box">write!</textarea>
+            <!-- JS 버전 -->
+            <!-- <textarea class="write-box" id="text" @input="write($event)">write!</textarea> -->
+            <!-- TS 버전 -->
+            <textarea class="write-box" id="text" @input="$emit('write', $event)">write!</textarea>
         </div>
     </div>
 </template> 
 
 <script setup lang="ts">
 import Post from '@/components/Post.vue'
-import { PostInterface } from '@/types';
+import { PostInterface, FilterNames } from '@/types'
+import FilterBox from '@/components/FilterBox.vue'
 
 /********** props, emit **********/
 /** props */
@@ -38,13 +42,29 @@ const props = defineProps<{
     step :number,
     blob :string
 }>()
+
+/** emits */
+const emitsBefore = defineEmits(['write'])
+
+// ********** function **********
+/** 글 발행 - JS 버전 */
+function write(param :Event) {
+    let target = param.target as HTMLInputElement
+    let value = target.value as string
+    emitsBefore('write', value) // parameter를 부모 컴포넌트로 전송
+}
+
+/** 글 발행 - TS 버전 */
+const emit = defineEmits<{
+    (e :'write', param :any) :void
+}>()
 </script>
 
 <style scoped>
 .upload-image{
 width: 100%;
 height: 450px;
-background: cornflowerblue;
+/* background: cornflowerblue; */
 background-size : cover;
 }
 .filters{

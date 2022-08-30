@@ -1,35 +1,38 @@
 <template>
     <div class="header">
         <ul class="header-button-left">
-        <li>Cancel</li>
+            <li @click="step = 0">Cancel</li>
         </ul>
+
+        <!-- 클릭시 다음 화면으로 전환 -->
         <ul class="header-button-right">
-        <li>Next</li>
+            <li v-if="step === 1" @click="++step">Next</li>
+            <li v-if="step === 2" @click="publish">발행</li>
         </ul>
         <img src="./assets/logo.png" class="logo" />
     </div>
 
     <Container :Data="refData" 
                :step="step"
-               :blob="blob as string" />
-    <button type="button" class="btn btn-primary" 
-            @click="pushData"> 더보기
-    </button>
-
+               :blob="(blob as any)"
+                @write="write"
+    />
+    
     <div class="footer">
         <ul class="footer-button-plus">
             <input @change="upload" type="file" id="file" class="inputfile" />
             <label for="file" class="input-plus">+</label>
         </ul>
-
-        <button v-for="(v, i) in new Array(3)"
-                @click="step = i">메뉴 {{ i }}</button>
     </div>
+    
+    <button type="button" class="btn btn-primary" 
+            @click="pushData"> 더보기
+    </button>
 </template>
 
 <script setup lang="ts">
 import Container from '@/components/Container.vue'
-import {Data} from '@/types'
+import {Data, PostInterface} from '@/types'
 import axios from 'axios'
 import { reactive, ref } from 'vue';
 
@@ -43,9 +46,8 @@ import { reactive, ref } from 'vue';
 let cnt :number = 0;
 let step = ref<number>(0);
 const refData = reactive(Data)
-// let blob :string
 const blob = ref<string>()
-
+let writeText :string = ''
 
 // ********** function **********
 /** 더보기 클릭 */
@@ -72,6 +74,29 @@ function upload(e :Event) :void {
         step.value = 1
     }
     // blob ? 0과 1로 이루어진 데이터를 blob 객체에 넣어서 반환시켜주어 이미지 조작이 가능해짐
+}
+
+/** 발행 객체 생성 */
+function write(param :string) {
+    writeText = param
+}
+
+/** 발행기능 */
+function publish() {
+    let myPost :PostInterface = {
+        name: '가나다',
+        userImage: 'https://placeimg.com/100/100/arch',
+        postImage: blob.value as string,
+        likes: 0,
+        date: 'July 18',
+        liked: false,
+        content: writeText,
+        filter: 'perpetua'
+    }
+
+    let postReactive = reactive(myPost)
+    refData.unshift(postReactive)
+    step.value = 0    
 }
 </script>
 
