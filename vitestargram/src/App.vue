@@ -1,7 +1,7 @@
 <template>
     <div class="header">
         <ul class="header-button-left">
-            <li @click="step = 0">Cancel</li>
+            <li @click="cancelFn">Cancel</li>
         </ul>
 
         <!-- 클릭시 다음 화면으로 전환 -->
@@ -16,6 +16,7 @@
                :step="step"
                :blob="(blob as any)"
                 @write="write"
+               :filterNm="filterNm"
     />
     
     <div class="footer">
@@ -24,7 +25,7 @@
             <label for="file" class="input-plus">+</label>
         </ul>
     </div>
-    
+
     <button type="button" class="btn btn-primary" 
             @click="pushData"> 더보기
     </button>
@@ -34,7 +35,7 @@
 import Container from '@/components/Container.vue'
 import {Data, PostInterface} from '@/types'
 import axios from 'axios'
-import { reactive, ref } from 'vue';
+import { ComponentInternalInstance, getCurrentInstance, onMounted, reactive, ref } from 'vue';
 
 // ********** Type & Interface **********
 
@@ -48,8 +49,39 @@ let step = ref<number>(0);
 const refData = reactive(Data)
 const blob = ref<string>()
 let writeText :string = ''
+const instance = getCurrentInstance() as ComponentInternalInstance
+const emitter = instance.appContext.config.globalProperties.emitter
+let postReactive
+let filterNm = ref<string>('')
+
+
+// ********** lifecycle hooks **********
+onMounted(() => {
+    emitter.on('fire', (filterParam :string) => {
+        let list = document.querySelector('.upload-image') as Element
+
+        // 초기화
+        let deleteClassStr = list.classList.value.split('upload-image')[1]
+
+        if(deleteClassStr.length > 0) {
+            list.classList.remove(deleteClassStr.trim()) // classOrigin을 제외한 나머지 클래스 삭제
+            list.classList.add(filterParam) // 새 클래스 추가
+        } else {
+            list.classList.add(filterParam)
+        }
+
+        filterNm.value = filterParam
+    })
+})
+
 
 // ********** function **********
+/** 취소하기 기능 */
+function cancelFn() :void {
+    step.value = 0
+    filterNm.value = ''
+}
+
 /** 더보기 클릭 */
 function pushData() :void {
     if(cnt < 2) {
@@ -77,8 +109,11 @@ function upload(e :Event) :void {
 }
 
 /** 발행 객체 생성 */
-function write(param :string) {
-    writeText = param
+function write(param :Event) {
+    let target = param.target as HTMLInputElement
+    let value = target.value as string
+    
+    writeText = value
 }
 
 /** 발행기능 */
@@ -91,10 +126,10 @@ function publish() {
         date: 'July 18',
         liked: false,
         content: writeText,
-        filter: 'perpetua'
+        filter: filterNm.value
     }
 
-    let postReactive = reactive(myPost)
+    postReactive = reactive(myPost)
     refData.unshift(postReactive)
     step.value = 0    
 }

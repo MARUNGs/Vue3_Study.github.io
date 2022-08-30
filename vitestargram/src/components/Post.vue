@@ -4,7 +4,7 @@
         <div class="profile"></div>
         <span class="profile-name">{{ d.name }}</span>
         </div>
-        <div class="post-body" :style="{ 'background-image': `url(${ d.postImage })` }"></div>
+        <div :class="filterNm" class="post-body" :style="{ 'background-image': `url(${ d.postImage })` }"></div>
         <div class="post-content">
         <p>{{ d.likes }} Likes</p>
         <p><strong>{{ d.name }}</strong> {{ d.content }}</p>
@@ -25,7 +25,8 @@ type StringType = string
 /** props */
 const props = defineProps<{ 
     i :number,
-    d :PostInterface
+    d :PostInterface,
+    filterNm :string
 }>()
 
 

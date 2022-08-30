@@ -3,16 +3,18 @@
         <Post v-for="(d, i) in Data"
                 :i="i"
                 :d="d"
+                :filterNm="d.filter"
         />
     </div>
 
     <!-- 필터선택페이지 -->
     <div v-if="step === 1">
-        <div class="upload-image" :style="{'background-image': `url(${blob})`}"></div>
+        <div :class="filterNm" class="upload-image" :style="{'background-image': `url(${blob})`}"></div>
         <div class="filters">
             <FilterBox v-for="(filter, i) in FilterNames"
                        :blob="blob"
                        :filter="filter">
+                    {{ filter }}
             </FilterBox>
 
         </div>
@@ -20,7 +22,7 @@
 
     <!-- 글작성페이지 -->
     <div v-if="step === 2">
-        <div class="upload-image" :style="{'background-image': `url(${blob})`}"></div>
+        <div :class="filterNm" class="upload-image" :style="{'background-image': `url(${blob})`}"></div>
         <div class="write">
             <!-- JS 버전 -->
             <!-- <textarea class="write-box" id="text" @input="write($event)">write!</textarea> -->
@@ -34,30 +36,43 @@
 import Post from '@/components/Post.vue'
 import { PostInterface, FilterNames } from '@/types'
 import FilterBox from '@/components/FilterBox.vue'
+import { ComponentInternalInstance, getCurrentInstance } from 'vue';
 
 /********** props, emit **********/
 /** props */
 const props = defineProps<{ 
     Data :PostInterface[],
     step :number,
-    blob :string
+    blob :string,
+    filterNm : string
 }>()
 
 /** emits */
-const emitsBefore = defineEmits(['write'])
+// const emitsBefore = defineEmits(['write'])
+
+
+
+
+
+
+// ********** variable **********
+const instance = getCurrentInstance() as ComponentInternalInstance
+const emitter = instance.appContext.config.globalProperties.emitter
+
 
 // ********** function **********
+// $emit 인라인 함수로 변경처리함 ... 
 /** 글 발행 - JS 버전 */
-function write(param :Event) {
-    let target = param.target as HTMLInputElement
-    let value = target.value as string
-    emitsBefore('write', value) // parameter를 부모 컴포넌트로 전송
-}
+// function write(param :Event) {
+//     let target = param.target as HTMLInputElement
+//     let value = target.value as string
+//     emitsBefore('write', value) // parameter를 부모 컴포넌트로 전송
+// }
 
 /** 글 발행 - TS 버전 */
-const emit = defineEmits<{
-    (e :'write', param :any) :void
-}>()
+// const emit = defineEmits<{
+//     (e :'writeTest', param :any) :void
+// }>()
 </script>
 
 <style scoped>
