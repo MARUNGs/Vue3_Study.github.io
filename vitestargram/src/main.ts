@@ -15,4 +15,9 @@ let app = createApp(App)
 app.config.globalProperties.emitter = emitter
 
 
-app.mount('#app')
+/** vuex 세팅 - store.js 호출 */
+import {store} from './store.js'
+
+
+// vuex 연결
+app.use(store).mount('#app')

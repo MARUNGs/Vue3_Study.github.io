@@ -4,7 +4,10 @@
         <div class="profile"></div>
         <span class="profile-name">{{ d.name }}</span>
         </div>
-        <div :class="filterNm" class="post-body" :style="{ 'background-image': `url(${ d.postImage })` }"></div>
+        <div :class="filterNm" 
+             class="post-body" 
+             :style="{ 'background-image': `url(${ d.postImage })` }"
+             @click="clickLike"></div>
         <div class="post-content">
         <p>{{ d.likes }} Likes</p>
         <p><strong>{{ d.name }}</strong> {{ d.content }}</p>
@@ -15,10 +18,12 @@
 
 <script setup lang="ts">
 import { PostInterface } from '@/types'
+import { ref } from 'vue'
+import { useStore } from 'vuex'
 
 
 /********** Type **********/
-type StringType = string
+
 
 
 /********** props, emit **********/
@@ -30,12 +35,31 @@ const props = defineProps<{
 }>()
 
 
+// ********** Vuex - store **********
+// store 내의 state를 호출할 땐 {state}
+// const store = useStore(); console.log(store.state.state데이터명)
+const store = useStore()
+// const {state} = useStore() << 이렇게도 사용 가능 !!
+
+
 /********** Variable **********/
-let postImgStr :StringType = ''
+const imgClick = ref<number>(0)
 
 
 /********** function **********/
+/** 좋아요 기능 */
+function clickLike() :void {
+    ++imgClick.value
 
+    if(imgClick.value === 1) { // 1번 누르면 좋아요 개수 1 증가
+        store.commit('plusLikes', props.i)
+    } else if(imgClick.value === 2) { // 2번 누르면 좋아요 개수 1 차감
+        store.commit('minusLikes', props.i)
+        imgClick.value = 0
+    } else {
+        console.log('여기로는 들어올 수 없어!')
+    }
+}
 
 </script>
 

@@ -14,7 +14,9 @@
     "bootstrap": "^5.2.0",
     "bootstrap-vue": "^2.22.0",
     "mitt": "^3.0.0",
-    "vue": "^3.2.37"
+    "pinia": "^2.0.21",
+    "vue": "^3.2.37",
+    "vuex": "^4.0.2"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^3.0.3",

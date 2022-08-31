@@ -15,16 +15,18 @@
         </div>
 
         <!--
-            Data : 게시물들
+            Data : 게시물들 -> Store로 수정
             step : Header에 사용되며 취소/등록을 담당
             blob : 이미지 데이터
             filterNm : 사진필터명(class binding)
+                
         -->
-        <Container :Data="refData" 
+        <Container 
+                :Data="store.state.data"
                 :step="step"
                 :blob="(blob as any)"
                 :filterNm="filterNm"
-                    @write="write"
+                @write="write"
         />
         
         <div class="footer">
@@ -34,6 +36,12 @@
             </ul>
         </div>
 
+        <h4>{{ $store.state.name + '(' + $store.state.age + ')' }}</h4>
+        <!-- store 사용법 : $store.commit('함수명', data) -->
+        <button class="btn-two mini blue" @click="$store.commit('changeName')">hey</button>
+        <button class="btn-two mini blue" @click="$store.commit('addAge', 10)">add Age</button>
+
+
         <button type="button" class="btn-two mini blue" 
                 @click="pushData"> 피드 더보기
         </button>
@@ -42,10 +50,13 @@
 </template>
 
 <script setup lang="ts">
+// ********** import **********
 import Container from '@/components/Container.vue'
 import {Data, PostInterface} from '@/types'
-import axios from 'axios'
+// import axios from 'axios'
 import { ComponentInternalInstance, getCurrentInstance, onMounted, reactive, ref } from 'vue';
+import { useStore } from 'vuex' // Vuex
+
 
 // ********** Type & Interface **********
 
@@ -54,9 +65,12 @@ import { ComponentInternalInstance, getCurrentInstance, onMounted, reactive, ref
 
 
 // ********** Variable **********
-let cnt :number = 0;
-let step = ref<number>(0);
-const refData = reactive(Data)
+let cnt :number = 0
+let step = ref<number>(0)
+
+// const refData = reactive(Data) // types.ts
+const store = useStore() // store.ts - 일반 데이터를 state 데이터로 관리하도록 함. (자동으로 반응형 처리됨)
+
 const blob = ref<string>()
 let writeText :string = ''
 const instance = getCurrentInstance() as ComponentInternalInstance
@@ -64,9 +78,17 @@ const emitter = instance.appContext.config.globalProperties.emitter
 let postReactive
 let filterNm = ref<string>('')
 
+// const a = computed(() => {
+//     return {
+//         ...mapState(['data'])
+//     }
+// })
+
+
 
 // ********** lifecycle hooks **********
 onMounted(() => {
+    // 결론 : emitter보다 props를 이용하도록 하자.
     emitter.on('fire', (filterParam :string) => {
         let list = document.querySelector('.upload-image') as Element
 
@@ -92,15 +114,21 @@ function cancelFn() :void {
     filterNm.value = ''
 }
 
-/** 더보기 클릭 */
+/** 더보기 클릭 -> Vuex 이용 */
 function pushData() :void {
     if(cnt < 2) {
-        axios.get('https://codingapple1.github.io/vue/more' + (cnt) + '.json')
-        .then((response) => {
-            refData.push(response.data)
-        })
-
+        // store의 actions 함수를 호출할 때는 dispatch 이용
+        store.dispatch('getData', cnt)
         ++cnt
+        
+
+        // axios.get('https://codingapple1.github.io/vue/more' + (cnt) + '.json')
+        // .then((response) => {
+        //     // refData.push(response.data) // 기존 list 삽입
+        //     store.commit('pushData', response.data) // Vuex -> data list 변경
+        // })
+
+        // ++cnt
     } else {
         alert('더 이상 게시물이 존재하지 않습니다.')
     }
@@ -119,7 +147,7 @@ function upload(e :Event) :void {
 }
 
 /** 발행 객체 생성 */
-function write(param :Event) {
+function write(param :Event) :void {
     let target = param.target as HTMLInputElement
     let value = target.value as string
     
@@ -127,7 +155,7 @@ function write(param :Event) {
 }
 
 /** 발행기능 */
-function publish() {
+function publish() :void {
     let myPost :PostInterface = {
         name: '가나다',
         userImage: 'https://placeimg.com/100/100/arch',
@@ -140,7 +168,8 @@ function publish() {
     }
 
     postReactive = reactive(myPost)
-    refData.unshift(postReactive)
+    // refData.unshift(postReactive) // 기존 data list에 추가
+    store.commit('pushUnshift', postReactive) // Vuex -> state data list에 추가
     step.value = 0    
 }
 </script>
@@ -163,7 +192,7 @@ ul {
   list-style-type: none;
 }
 .logo {
-  width: 22px;
+  width: 35px;
   margin: auto;
   display: block;
   position: absolute;

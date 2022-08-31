@@ -33,11 +33,18 @@ body {
 }
 
 /* 스크롤바 설정 */
-body::-webkit-scrollbar { width: 8px; }
-body::-webkit-scrollbar-track { background: #7fb1bf; }
-body::-webkit-scrollbar-thumb { 
-    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.9);
-    border-radius: 100px;
+body::-webkit-scrollbar {
+    height: 5px;
+}
+body::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+}
+body::-webkit-scrollbar-thumb {
+    background: #888; 
+    border-radius: 5px;
+}
+body::-webkit-scrollbar-thumb:hover {
+    background: #555; 
 }
 
 
