@@ -1,17 +1,26 @@
 <template>
-    <div style="padding : 10px" class="myPage">
-        <h4>팔로워</h4>
-        <input placeholder="🔍 검색" @input="search($event)" />
-        <div class="post-header" v-for="(person, i) in follower">
-            <div class="profile" :style="`background-image: url(${person.image})`"></div>
-            <span class="profile-name">{{ person.name }}</span>
-        </div>
-    </div>
+    <ul>
+        <li>
+            <div style="padding : 10px" class="myPage">
+                <h4>팔로워</h4>
+                <input placeholder="🔍 검색" @input="search($event)" />
+                <div class="post-header" v-for="(person, i) in follower">
+                    <div class="profile" :style="`background-image: url(${person.image})`"></div>
+                    <span class="profile-name">{{ person.name }}</span>
+                </div>
+            </div>
+        </li>
+        <li>
+            <TodoSummary />
+        </li>
+    </ul>
+    
 </template>
 
 <script setup lang="ts">
-import axios from 'axios';
+import axios from 'axios'
 import { onMounted, ref } from 'vue'
+import TodoSummary from '@/components/TodoSummary.vue'
 
 
 // Composition API 방식 : 여태동안 내가 한거임 ㅋㅋ setup()
@@ -60,7 +69,11 @@ function search(e :Event) :void {
   padding-top: 7px;
   font-size: 14px;
 }
-.myPage {
-    height:100%;
+ul li {
+    list-style-type: none; 
+    display: inline-flex;
+}
+li {
+    margin: 0 10px;
 }
 </style>

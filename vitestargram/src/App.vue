@@ -192,7 +192,7 @@ function showTodoList() :void {
     font-family: "consolas";
     margin-top: 60px;
     width: 100%;
-    max-width: 460px;
+    /* max-width: 460px; */
     margin: auto;
     position: relative;
     border-right: 1px solid #eee;
