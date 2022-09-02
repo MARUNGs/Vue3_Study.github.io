@@ -4,6 +4,7 @@
         <div class="header">
             <ul class="header-button-left">
                 <li v-if="step >= 1" class="btn-two mini red" @click="cancelFn">Cancel</li>
+                <li v-if="step === 0" class="btn-two mini blue" @click="moveStep"> MyPage </li>
             </ul>
 
             <!-- 클릭시 다음 화면으로 전환 -->
@@ -36,15 +37,15 @@
             </ul>
         </div>
 
-        <h4>{{ $store.state.name + '(' + $store.state.age + ')' }}</h4>
+        <!-- <h4>{{ $store.state.name + '(' + $store.state.age + ')' }}</h4> -->
         <!-- store 사용법 : $store.commit('함수명', data) -->
-        <button class="btn-two mini blue" @click="$store.commit('changeName')">hey</button>
-        <button class="btn-two mini blue" @click="$store.commit('addAge', 10)">add Age</button>
+        <!-- <button class="btn-two mini blue" @click="$store.commit('changeName')">hey</button> -->
+        <!-- <button class="btn-two mini blue" @click="$store.commit('addAge', 10)">add Age</button> -->
 
 
-        <button type="button" class="btn-two mini blue" 
+        <!-- <button type="button" class="btn-two mini blue" 
                 @click="pushData"> 피드 더보기
-        </button>
+        </button> -->
     </div>
     <button class="btn-help mini btn-jittery">?</button>
 </template>
@@ -172,6 +173,12 @@ function publish() :void {
     store.commit('pushUnshift', postReactive) // Vuex -> state data list에 추가
     step.value = 0    
 }
+
+/** 마이페이지로 이동 */
+function moveStep() :void {
+    step.value = 3
+}
+
 </script>
 
 <style scoped>

@@ -30,6 +30,11 @@
             <textarea class="write-box" id="text" @input="$emit('write', $event)">write!</textarea>
         </div>
     </div>
+
+    <!-- 마이페이지 -->
+    <div v-if="step === 3">
+        <MyPage />
+    </div>
 </template> 
 
 <script setup lang="ts">
@@ -37,6 +42,7 @@ import Post from '@/components/Post.vue'
 import { PostInterface, FilterNames } from '@/types'
 import FilterBox from '@/components/FilterBox.vue'
 import { ComponentInternalInstance, getCurrentInstance } from 'vue';
+import MyPage from './MyPage.vue';
 
 /********** props, emit **********/
 /** props */
