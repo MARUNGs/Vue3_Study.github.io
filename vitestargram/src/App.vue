@@ -11,6 +11,7 @@
             <ul class="header-button-right">
                 <li v-if="step === 1" class="btn-two mini green" @click="++step"> Next</li>
                 <li v-if="step === 2" class="btn-two mini blue" @click="publish">발행</li>
+                <li v-if="step === 3" class="btn-two mini blue" @click="showTodoList"> Todo </li>
             </ul>
             <img src="./assets/logo.png" class="logo" />
         </div>
@@ -179,6 +180,10 @@ function moveStep() :void {
     step.value = 3
 }
 
+/** 나의 todo list로 이동 */
+function showTodoList() :void {
+    step.value = 4
+}
 </script>
 
 <style scoped>
