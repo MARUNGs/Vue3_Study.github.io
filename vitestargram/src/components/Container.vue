@@ -35,14 +35,20 @@
     <div v-if="step === 3">
         <MyPage />
     </div>
+
+    <!-- TodoList -->
+    <div v-if="step === 4">
+        <TodoList />
+    </div>
 </template> 
 
 <script setup lang="ts">
 import Post from '@/components/Post.vue'
 import { PostInterface, FilterNames } from '@/types'
 import FilterBox from '@/components/FilterBox.vue'
-import { ComponentInternalInstance, getCurrentInstance } from 'vue';
-import MyPage from './MyPage.vue';
+import { ComponentInternalInstance, getCurrentInstance } from 'vue'
+import MyPage from './MyPage.vue'
+import TodoList from './TodoList.vue'
 
 /********** props, emit **********/
 /** props */

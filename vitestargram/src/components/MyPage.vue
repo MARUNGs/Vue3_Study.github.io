@@ -1,5 +1,5 @@
 <template>
-    <div style="padding : 10px">
+    <div style="padding : 10px" class="myPage">
         <h4>팔로워</h4>
         <input placeholder="🔍 검색" @input="search($event)" />
         <div class="post-header" v-for="(person, i) in follower">
@@ -59,5 +59,8 @@ function search(e :Event) :void {
   padding-left: 10px;
   padding-top: 7px;
   font-size: 14px;
+}
+.myPage {
+    height:100%;
 }
 </style>
