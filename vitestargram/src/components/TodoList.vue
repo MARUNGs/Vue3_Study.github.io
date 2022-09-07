@@ -1,11 +1,17 @@
 <template>
-    <div class="jumbotron">
-        <h1 class="display-4">Main</h1>
-        <p class="lead">title 블라블라</p>
-        <hr class="my-4">
-        <p>내용 라블라블</p>
-        <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
-    </div>
+    <form>
+        <div class="bg_div">
+            <div class="form-group">
+                <label for="exampleFormControlInput1">Todo</label>
+                <input type="email" class="form-control" id="input">
+                <br/>
+                <label for="exampleFormControlInput1">Date</label>
+                <input type="email" class="form-control" id="input">
+                <br/>
+                <button class="btn btn-danger">submit</button>
+            </div>
+        </div>
+    </form>
 </template>
 
 <script setup lang="ts">
@@ -24,4 +30,7 @@ import axios from 'axios'
 </script>
 
 <style scoped>
+.bg_div {
+    padding: 1.5rem 15.0rem;
+}
 </style>
